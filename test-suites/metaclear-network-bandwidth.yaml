@@ -1,0 +1,43 @@
+attacknetConfig:
+  grafanaPodName: grafana
+  grafanaPodPort: 3000
+  waitBeforeInjectionSeconds: 240
+  reuseDevnetBetweenRuns: true
+  allowPostFaultInspection: true
+  existingDevnetNamespace: kt-relaytestnet
+
+harnessConfig:
+  networkPackage: github.com/ethpandaops/ethereum-package
+  networkConfig: metaclear-relayer-devnet.yaml
+  networkType: ethereum
+
+testConfig:
+  tests:
+  - testName: metaclear-network-bandwidth
+    health:
+      enableChecks: true
+      gracePeriod: 2m0s
+    planSteps:
+    - stepType: injectFault
+      description: "inject fault"
+      chaosFaultSpec:
+        kind: NetworkChaos
+        apiVersion: chaos-mesh.org/v1alpha1
+        spec:
+          selector:
+            labelSelectors:
+              kurtosistech.com.custom/ethereum-package.client-type: beacon
+          target:
+            mode: all
+            labelSelectors:
+              kurtosistech.com/id: cl-1-lighthouse-geth
+          mode: all
+          action: bandwidth
+          duration: 1m
+          direction: from
+          bandwidth:
+            rate: '10kbps'
+            limit:  20000
+            buffer: 500
+    - stepType: waitForFaultCompletion
+      description: wait for faults to terminate

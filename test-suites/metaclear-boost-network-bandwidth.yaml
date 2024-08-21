@@ -1,7 +1,7 @@
 attacknetConfig:
   grafanaPodName: grafana
   grafanaPodPort: 3000
-  waitBeforeInjectionSeconds: 240
+  waitBeforeInjectionSeconds: 100
   reuseDevnetBetweenRuns: true
   allowPostFaultInspection: true
   existingDevnetNamespace: kt-relaytestnet
@@ -24,9 +24,9 @@ testConfig:
         kind: NetworkChaos
         apiVersion: chaos-mesh.org/v1alpha1
         spec:
-          selector:
-            labelSelectors:
-              kurtosistech.com.custom/ethereum-package.client-type: beacon
+          # selector:
+          #   labelSelectors:
+          #     kurtosistech.com.custom/ethereum-package.client-type: beacon
           target:
             mode: all
             labelSelectors:

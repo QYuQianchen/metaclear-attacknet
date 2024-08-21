@@ -1,7 +1,7 @@
 attacknetConfig:
   grafanaPodName: grafana
   grafanaPodPort: 3000
-  waitBeforeInjectionSeconds: 240
+  waitBeforeInjectionSeconds: 50
   reuseDevnetBetweenRuns: true
   allowPostFaultInspection: true
   existingDevnetNamespace: kt-relaytestnet
@@ -40,7 +40,7 @@ testConfig:
               workers: 50 # number of threads used to consume the memory defined by size. Memory to be allocated is split evenly between workers. Keep in mind threads have ~3MB overhead each.
               size: '500MB'
 
-          duration: 15m
+          duration: 5m
     - stepType: waitForFaultCompletion
       description: wait for faults to terminate
 

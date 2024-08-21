@@ -1,7 +1,7 @@
 attacknetConfig:
   grafanaPodName: grafana
   grafanaPodPort: 3000
-  waitBeforeInjectionSeconds: 240
+  waitBeforeInjectionSeconds: 150
   reuseDevnetBetweenRuns: true
   allowPostFaultInspection: true
   existingDevnetNamespace: kt-relaytestnet
@@ -26,7 +26,7 @@ testConfig:
         spec:
           selector:
             labelSelectors:
-              kurtosistech.com/id: cl-1-lighthouse-geth
+              kurtosistech.com/id: cl-3-lighthouse-geth
           mode: all
           action: delay
           timeOffset: '832s'

@@ -19,7 +19,33 @@ testConfig:
       gracePeriod: 2m0s
     planSteps:
     - stepType: injectFault
-      description: 'Inject clock skew'
+      description: 'Inject clock skew to validator client'
+      chaosFaultSpec:
+        kind: TimeChaos
+        apiVersion: chaos-mesh.org/v1alpha1
+        spec:
+          selector:
+            labelSelectors:
+              kurtosistech.com/id: vc-1-geth-lighthouse
+          mode: all
+          action: delay
+          timeOffset: '832s'
+          duration: 1000s
+    - stepType: injectFault
+      description: 'Inject clock skew to mev-boost'
+      chaosFaultSpec:
+        kind: TimeChaos
+        apiVersion: chaos-mesh.org/v1alpha1
+        spec:
+          selector:
+            labelSelectors:
+              kurtosistech.com/id: mev-boost-2-lighthouse-geth
+          mode: all
+          action: delay
+          timeOffset: '832s'
+          duration: 1000s
+    - stepType: injectFault
+      description: 'Inject clock skew to beacon client'
       chaosFaultSpec:
         kind: TimeChaos
         apiVersion: chaos-mesh.org/v1alpha1

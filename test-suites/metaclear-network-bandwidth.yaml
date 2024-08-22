@@ -1,7 +1,7 @@
 attacknetConfig:
   grafanaPodName: grafana
   grafanaPodPort: 3000
-  waitBeforeInjectionSeconds: 100
+  waitBeforeInjectionSeconds: 50
   reuseDevnetBetweenRuns: true
   allowPostFaultInspection: true
   existingDevnetNamespace: kt-relaytestnet
@@ -19,21 +19,75 @@ testConfig:
       gracePeriod: 2m0s
     planSteps:
     - stepType: injectFault
-      description: "inject fault"
+      description: "inject fault to validator client"
       chaosFaultSpec:
         kind: NetworkChaos
         apiVersion: chaos-mesh.org/v1alpha1
         spec:
-          # selector:
-          #   labelSelectors:
-          #     kurtosistech.com.custom/ethereum-package.client-type: beacon
+          selector:
+            namespaces:
+              - kt-relaytestnet
+            labelSelectors:
+              kurtosistech.com.custom/ethereum-package.client-type: validator
           target:
             mode: all
+            namespaces:
+              - kt-relaytestnet
             labelSelectors:
-              kurtosistech.com/id: cl-2-lighthouse-geth
+              kurtosistech.com/id: vc-1-geth-lighthouse
           mode: all
           action: bandwidth
-          duration: 5m
+          duration: 1m
+          direction: from
+          bandwidth:
+            rate: '10kbps'
+            limit:  20000
+            buffer: 500
+    - stepType: injectFault
+      description: "inject fault to mev-boost"
+      chaosFaultSpec:
+        kind: NetworkChaos
+        apiVersion: chaos-mesh.org/v1alpha1
+        spec:
+          selector:
+            namespaces:
+              - kt-relaytestnet
+            labelSelectors:
+              kurtosistech.com.custom/ethereum-package.client-type: beacon
+          target:
+            mode: all
+            namespaces:
+              - kt-relaytestnet
+            labelSelectors:
+              kurtosistech.com/id: mev-boost-2-lighthouse-geth
+          mode: all
+          action: bandwidth
+          duration: 1m
+          direction: from
+          bandwidth:
+            rate: '10kbps'
+            limit:  20000
+            buffer: 500
+    - stepType: injectFault
+      description: "inject fault to beacon client"
+      chaosFaultSpec:
+        kind: NetworkChaos
+        apiVersion: chaos-mesh.org/v1alpha1
+        spec:
+          selector:
+            namespaces:
+              - kt-relaytestnet
+            labelSelectors:
+              kurtosistech.com.custom/ethereum-package.client-type: beacon
+          target:
+            mode: all
+            namespaces:
+              - kt-relaytestnet
+            labelSelectors:
+              kurtosistech.com/id: cl-3-lighthouse-geth
+          mode: all
+          action: bandwidth
+          duration: 1m
           direction: from
           bandwidth:
             rate: '10kbps'

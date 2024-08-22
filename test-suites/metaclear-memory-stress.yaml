@@ -23,7 +23,7 @@ testConfig:
     # kubectl top pod el-1-geth-lighthouse
     planSteps:
     - stepType: injectFault
-      description: "inject fault"
+      description: "inject fault to validator client"
       chaosFaultSpec:
         kind: StressChaos
         apiVersion: chaos-mesh.org/v1alpha1
@@ -34,13 +34,48 @@ testConfig:
               # kurtosistech.com.custom/ethereum-package.client-type: beacon
               # kurtosistech.com.custom/ethereum-package.client-type: execution
               #kurtosistech.com/id: cl-3-prysm-geth
-              kurtosistech.com/id: cl-1-lighthouse-geth
+              kurtosistech.com/id: vc-1-geth-lighthouse
           stressors:
             memory:
               workers: 50 # number of threads used to consume the memory defined by size. Memory to be allocated is split evenly between workers. Keep in mind threads have ~3MB overhead each.
               size: '500MB'
-
-          duration: 5m
+          duration: 2m
+    - stepType: injectFault
+      description: "inject fault to mev-boost"
+      chaosFaultSpec:
+        kind: StressChaos
+        apiVersion: chaos-mesh.org/v1alpha1
+        spec:
+          mode: all
+          selector:
+            labelSelectors:
+              # kurtosistech.com.custom/ethereum-package.client-type: beacon
+              # kurtosistech.com.custom/ethereum-package.client-type: execution
+              #kurtosistech.com/id: cl-3-prysm-geth
+              kurtosistech.com/id: mev-boost-2-lighthouse-geth
+          stressors:
+            memory:
+              workers: 50 # number of threads used to consume the memory defined by size. Memory to be allocated is split evenly between workers. Keep in mind threads have ~3MB overhead each.
+              size: '500MB'
+          duration: 2m
+    - stepType: injectFault
+      description: "inject fault to beacon client"
+      chaosFaultSpec:
+        kind: StressChaos
+        apiVersion: chaos-mesh.org/v1alpha1
+        spec:
+          mode: all
+          selector:
+            labelSelectors:
+              # kurtosistech.com.custom/ethereum-package.client-type: beacon
+              # kurtosistech.com.custom/ethereum-package.client-type: execution
+              #kurtosistech.com/id: cl-3-prysm-geth
+              kurtosistech.com/id: cl-3-lighthouse-geth
+          stressors:
+            memory:
+              workers: 50 # number of threads used to consume the memory defined by size. Memory to be allocated is split evenly between workers. Keep in mind threads have ~3MB overhead each.
+              size: '500MB'
+          duration: 2m
     - stepType: waitForFaultCompletion
       description: wait for faults to terminate
 

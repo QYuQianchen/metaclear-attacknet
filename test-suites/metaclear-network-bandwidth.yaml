@@ -4,10 +4,10 @@ attacknetConfig:
   waitBeforeInjectionSeconds: 50
   reuseDevnetBetweenRuns: true
   allowPostFaultInspection: true
-  existingDevnetNamespace: kt-relaytestnet
+  existingDevnetNamespace: kt-attacknetforrelay
 
 harnessConfig:
-  networkPackage: github.com/ethpandaops/ethereum-package
+  networkPackage: github.com/crytic/ethereum-package@0ed559c2661989b44cd2a44eca013acd64786f7f
   networkConfig: metaclear-relayer-devnet.yaml
   networkType: ethereum
 
@@ -26,13 +26,13 @@ testConfig:
         spec:
           selector:
             namespaces:
-              - kt-relaytestnet
+              - kt-attacknetforrelay
             labelSelectors:
               kurtosistech.com.custom/ethereum-package.client-type: validator
           target:
             mode: all
             namespaces:
-              - kt-relaytestnet
+              - kt-attacknetforrelay
             labelSelectors:
               kurtosistech.com/id: vc-1-geth-lighthouse
           mode: all
@@ -51,13 +51,13 @@ testConfig:
         spec:
           selector:
             namespaces:
-              - kt-relaytestnet
+              - kt-attacknetforrelay
             labelSelectors:
               kurtosistech.com.custom/ethereum-package.client-type: beacon
           target:
             mode: all
             namespaces:
-              - kt-relaytestnet
+              - kt-attacknetforrelay
             labelSelectors:
               kurtosistech.com/id: mev-boost-2-lighthouse-geth
           mode: all
@@ -76,13 +76,13 @@ testConfig:
         spec:
           selector:
             namespaces:
-              - kt-relaytestnet
+              - kt-attacknetforrelay
             labelSelectors:
               kurtosistech.com.custom/ethereum-package.client-type: beacon
           target:
             mode: all
             namespaces:
-              - kt-relaytestnet
+              - kt-attacknetforrelay
             labelSelectors:
               kurtosistech.com/id: cl-3-lighthouse-geth
           mode: all

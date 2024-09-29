@@ -39,7 +39,7 @@ testConfig:
             memory:
               workers: 50 # number of threads used to consume the memory defined by size. Memory to be allocated is split evenly between workers. Keep in mind threads have ~3MB overhead each.
               size: '500MB'
-          duration: 2m
+          duration: 10m
     - stepType: injectFault
       description: "inject fault to mev-boost"
       chaosFaultSpec:
@@ -57,7 +57,7 @@ testConfig:
             memory:
               workers: 50 # number of threads used to consume the memory defined by size. Memory to be allocated is split evenly between workers. Keep in mind threads have ~3MB overhead each.
               size: '500MB'
-          duration: 2m
+          duration: 10m
     - stepType: injectFault
       description: "inject fault to beacon client"
       chaosFaultSpec:
@@ -75,7 +75,7 @@ testConfig:
             memory:
               workers: 50 # number of threads used to consume the memory defined by size. Memory to be allocated is split evenly between workers. Keep in mind threads have ~3MB overhead each.
               size: '500MB'
-          duration: 2m
+          duration: 10m
     - stepType: waitForFaultCompletion
       description: wait for faults to terminate
 
